@@ -12,7 +12,17 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 
 **Stack:** HTML5 + CSS3 + Vanilla JS (frontend) · Node.js + Express (backend) · MongoDB + Mongoose (database) · JWT (auth, later phase)
 
-**Current status: PHASE 1 — Project setup.** Health-check API and frontend shell only. No models, auth, or transactions yet (Phases 2+).
+**Current status: PHASE 3 — Authentication.** Models, indexes, and default-category seeding (Phase 2) plus register/login/logout/`/me` with bcrypt + JWT in HTTP-only cookies (Phase 3) are implemented. Transactions API and UI are next (Phases 4+).
+
+## API so far
+
+| Method | Path | Auth | Description |
+|---|---|---|---|
+| GET | `/api/health` | — | Liveness + DB status |
+| POST | `/api/auth/register` | — | Create account (also seeds settings + default categories); sets `token` cookie |
+| POST | `/api/auth/login` | — | Login; sets `token` cookie |
+| POST | `/api/auth/logout` | — | Clears the auth cookie |
+| GET | `/api/auth/me` | cookie or `Authorization: Bearer` | Current user |
 
 ## Project structure
 

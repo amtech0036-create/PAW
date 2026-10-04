@@ -72,10 +72,23 @@ describe('Indexes and constraints (PRD section 50)', () => {
 
   it('transaction query indexes exist', async () => {
     const indexes = await Transaction.collection.getIndexes({ full: false });
-    const names = Object.keys(indexes).map((k) => k);
-    const find = (keys) => names.some((n) => JSON.stringify(indexes[n].key) === JSON.stringify(keys));
-    assert.ok(find({ userId: 1, date: -1 }), 'missing {userId, date:-1} index');
-    assert.ok(find({ userId: 1, type: 1, date: -1 }), 'missing {userId, type, date:-1} index');
+
+    // Normalize across driver shapes:
+    //   driver v6: { name: [[field, dir], ...] }
+    //   other:     { name: { field: dir, ... } }
+    const keySpecs = Object.values(indexes).map((spec) => {
+      if (spec && !Array.isArray(spec) && spec.key) return spec.key;
+      return Object.fromEntries(spec.map(([field, dir]) => [field, dir]));
+    });
+
+    const has = (keys) =>
+      keySpecs.some((k) => JSON.stringify(k) === JSON.stringify(keys));
+
+    assert.ok(has({ userId: 1, date: -1 }), 'missing {userId, date:-1} index');
+    assert.ok(
+      has({ userId: 1, type: 1, date: -1 }),
+      'missing {userId, type, date:-1} index'
+    );
   });
 });
 

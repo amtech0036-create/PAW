@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('./config/env');
 
 const path = require('path');
 const express = require('express');
@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 
 const healthRoutes = require('./routes/healthRoutes');
+const authRoutes = require('./routes/authRoutes');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 /**
@@ -29,9 +30,11 @@ function createApp() {
 
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true, limit: '1mb' }));
+  app.use(require('cookie-parser')());
 
   // API routes.
   app.use('/api', healthRoutes);
+  app.use('/api/auth', authRoutes);
 
   // Serve the static PWA frontend from ../client.
   app.use(express.static(path.join(__dirname, '..', '..', 'client')));
