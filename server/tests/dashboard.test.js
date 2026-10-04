@@ -156,17 +156,17 @@ describe('GET /api/dashboard (PRD section 35)', () => {
 
     const def = await req('GET', '/api/dashboard', { auth: u.token });
     assert.equal(def.json.recentTransactions.length, 5);
-    // The 5 newest are Sep 05..Sep 01 -> first is the latest date.
-    assert.equal(def.json.recentTransactions[0].date.slice(0, 10), '2026-09-05');
-    assert.equal(def.json.recentTransactions[4].date.slice(0, 10), '2026-09-01');
+    // Dates are Sep 01..Sep 09, so the 5 newest are Sep 09..Sep 05.
+    assert.equal(def.json.recentTransactions[0].date.slice(0, 10), '2026-09-09');
+    assert.equal(def.json.recentTransactions[4].date.slice(0, 10), '2026-09-05');
 
     const limited = await req('GET', '/api/dashboard?limit=2', { auth: u.token });
     assert.equal(limited.json.recentTransactions.length, 2);
-    assert.equal(limited.json.recentTransactions[0].date.slice(0, 10), '2026-09-05');
+    assert.equal(limited.json.recentTransactions[0].date.slice(0, 10), '2026-09-09');
 
     // Balance totals still cover ALL transactions, not just the recent page.
     assert.equal(limited.json.totalExpense, 45); // 1+2+...+9
-    assert.equal(limited.json.currentBalance, 45);
+    assert.equal(limited.json.currentBalance, -45); // expense-only user: 0 - 45
 
     // Out-of-range limits clamp instead of erroring.
     const big = await req('GET', '/api/dashboard?limit=999', { auth: u.token });
