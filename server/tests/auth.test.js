@@ -94,7 +94,7 @@ describe('Register (PRD section 57)', () => {
     const Settings = require('../src/models/Settings');
     const Category = require('../src/models/Category');
     assert.equal(await Settings.countDocuments({ userId: user._id }), 1);
-    assert.equal(await Category.countDocuments({ userId: user._id, type: 'income' }), 9);
+    assert.equal(await Category.countDocuments({ userId: user._id, type: 'income' }), 10); // includes 'Opening Balance' seeded since Phase 5
     assert.equal(await Category.countDocuments({ userId: user._id, type: 'expense' }), 15);
   });
 

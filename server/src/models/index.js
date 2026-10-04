@@ -3,13 +3,17 @@ const mongoose = require('mongoose');
 const Transaction = require('./Transaction');
 const Category = require('./Category');
 const Settings = require('./Settings');
+const User = require('./User');
 
 /**
  * Ensures every model's indexes exist in the connected database
  * (PRD section 50). Safe to call repeatedly; MongoDB skips existing indexes.
+ * Includes User so the unique email index exists deterministically instead
+ * of relying on mongoose's background auto-index build (race found in Phase 5).
  */
 async function ensureIndexes() {
   await Promise.all([
+    User.syncIndexes(),
     Transaction.syncIndexes(),
     Category.syncIndexes(),
     Settings.syncIndexes(),
@@ -30,6 +34,10 @@ const DEFAULT_INCOME_CATEGORIES = [
   'Investment',
   'Gift',
   'Other Income',
+  // Built-in category for recording the starting balance as an income
+  // transaction (PRD section 13). The balance VALUE itself lives in Settings
+  // per PRD section 13 - see Phase 5 note above.
+  'Opening Balance',
 ];
 
 const DEFAULT_EXPENSE_CATEGORIES = [

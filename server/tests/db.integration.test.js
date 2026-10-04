@@ -93,19 +93,23 @@ describe('Indexes and constraints (PRD section 50)', () => {
 });
 
 describe('Default category seeding (PRD sections 15-16)', () => {
-  it('seeds 9 income + 15 expense default categories', async () => {
+  it('seeds 10 income + 15 expense default categories (incl. Opening Balance, Phase 5)', async () => {
     const userId = new mongoose.Types.ObjectId();
     const inserted = await seedDefaultCategories(userId);
 
-    assert.equal(DEFAULT_INCOME_CATEGORIES.length, 9);
+    assert.equal(DEFAULT_INCOME_CATEGORIES.length, 10);
     assert.equal(DEFAULT_EXPENSE_CATEGORIES.length, 15);
-    assert.equal(inserted.length, 24);
-    assert.equal(await Category.countDocuments({ userId, type: 'income' }), 9);
+    assert.equal(inserted.length, 25);
+    assert.equal(await Category.countDocuments({ userId, type: 'income' }), 10);
     assert.equal(await Category.countDocuments({ userId, type: 'expense' }), 15);
 
     const amTech = await Category.findOne({ userId, name: 'A&M Tech Solutions' });
     assert.ok(amTech, 'A&M Tech Solutions category missing');
     assert.equal(amTech.type, 'income');
+
+    const openingCat = await Category.findOne({ userId, name: 'Opening Balance' });
+    assert.ok(openingCat, "built-in 'Opening Balance' category missing (Phase 5)");
+    assert.equal(openingCat.type, 'income');
 
     await Category.deleteMany({ userId });
   });
