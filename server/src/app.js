@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const healthRoutes = require('./routes/healthRoutes');
 const authRoutes = require('./routes/authRoutes');
+const transactionRoutes = require('./routes/transactionRoutes');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 /**
@@ -35,6 +36,7 @@ function createApp() {
   // API routes.
   app.use('/api', healthRoutes);
   app.use('/api/auth', authRoutes);
+  app.use('/api/transactions', transactionRoutes);
 
   // Serve the static PWA frontend from ../client.
   app.use(express.static(path.join(__dirname, '..', '..', 'client')));

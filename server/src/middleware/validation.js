@@ -27,6 +27,53 @@ function validateName(name) {
 }
 
 /**
+ * Transaction validation (PRD sections 41/43).
+ * Amount must be a finite number > 0; never negative, NaN, or empty.
+ */
+function validateAmount(amount) {
+  const n = typeof amount === 'string' && amount.trim() !== '' ? Number(amount) : amount;
+  if (typeof n !== 'number' || !Number.isFinite(n) || n <= 0) {
+    return 'Amount must be a number greater than 0.';
+  }
+  return null;
+}
+
+function validateType(type) {
+  if (type !== 'income' && type !== 'expense') {
+    return 'Type must be income or expense.';
+  }
+  return null;
+}
+
+function validateDate(date) {
+  if (!date || typeof date !== 'string' || Number.isNaN(Date.parse(date))) {
+    return 'Please enter a valid date.';
+  }
+  return null;
+}
+
+function validateObjectId(id, label = 'ID') {
+  if (typeof id !== 'string' || !/^[0-9a-fA-F]{24}$/.test(id)) {
+    return `Please provide a valid ${label}.`;
+  }
+  return null;
+}
+
+function validateNote(note) {
+  if (note !== undefined && note !== null && typeof note !== 'string') {
+    return 'Note must be text.';
+  }
+  return null;
+}
+
+function validateSource(source) {
+  if (source !== undefined && source !== null && typeof source !== 'string') {
+    return 'Source must be text.';
+  }
+  return null;
+}
+
+/**
  * Runs a list of validators and returns the first error message, or null.
  */
 function firstError(...checks) {
@@ -36,4 +83,16 @@ function firstError(...checks) {
   return null;
 }
 
-module.exports = { validateEmail, validatePassword, validateName, firstError, EMAIL_RE };
+module.exports = {
+  validateEmail,
+  validatePassword,
+  validateName,
+  validateAmount,
+  validateType,
+  validateDate,
+  validateObjectId,
+  validateNote,
+  validateSource,
+  firstError,
+  EMAIL_RE,
+};
