@@ -12,7 +12,7 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 
 **Stack:** HTML5 + CSS3 + Vanilla JS (frontend) · Node.js + Express (backend) · MongoDB + Mongoose (database) · JWT (auth, later phase)
 
-**Current status: PHASE 3 — Authentication.** Models, indexes, and default-category seeding (Phase 2) plus register/login/logout/`/me` with bcrypt + JWT in HTTP-only cookies (Phase 3) are implemented. Transactions API and UI are next (Phases 4+).
+**Current status: PHASE 7 — Frontend Foundation.** The backend (auth, transactions, balance, dashboard) and all seven frontend pages with a shared mobile-first stylesheet are in place. Next: wiring the auth UI (Phase 8), then the dashboard/transaction UIs (Phases 9–11).
 
 ## API so far
 
@@ -29,8 +29,14 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 ```text
 personal-finance-tracker/
 ├── client/              # PWA frontend (HTML/CSS/vanilla JS)
-│   ├── index.html
-│   ├── css/style.css
+│   ├── index.html       # Landing page + server status
+│   ├── login.html       # Auth forms wired in Phase 8
+│   ├── register.html
+│   ├── dashboard.html   # Data wired in Phase 9
+│   ├── transactions.html
+│   ├── reports.html
+│   ├── settings.html
+│   ├── css/style.css    # Shared mobile-first styles
 │   └── js/app.js
 ├── server/
 │   ├── src/
@@ -103,13 +109,14 @@ curl http://localhost:5000/api/health
 
 ## Roadmap (PRD phases)
 
-1. ✅ **Project setup** (this phase)
-2. Database models (User, Transaction, Category, Settings)
-3. Authentication (bcrypt + JWT + secure cookies)
-4. Transaction CRUD API
-5. Balance service
-6. Dashboard API
-7–11. Frontend (auth UI, dashboard, add/edit transactions, list)
+1. ✅ **Project setup**
+2. ✅ Database models (User, Transaction, Category, Settings)
+3. ✅ Authentication (bcrypt + JWT + secure cookies)
+4. ✅ Transaction CRUD API
+5. ✅ Balance service
+6. ✅ Dashboard API
+7. ✅ Frontend foundation (7 pages, mobile-first CSS)
+8–11. Auth UI, dashboard UI, add/edit transactions, transaction list
 12–13. Categories, Reports
 14–15. PWA + export/import
 16–17. Security review, deployment

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Your cash flow dashboard: balance, income, expenses, and recent transactions." />
+  <title>Dashboard · Personal Cash Flow Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-bar">
+      <h1>Dashboard</h1>
+      <a class="bar-action" href="settings.html" aria-label="Open settings">⚙</a>
+    </header>
+
+    <!-- Populated in Phase 9 (Dashboard UI). -->
+    <section class="card balance-card" aria-label="Current balance">
+      <p class="stat-label">Current Balance</p>
+      <p class="stat-value" id="current-balance">৳0.00</p>
+      <p class="stat-note">Opening balance + income − expenses</p>
+    </section>
+
+    <section class="stat-grid" aria-label="Monthly summary">
+      <div class="card">
+        <p class="stat-label">Income</p>
+        <p class="stat-value income" id="total-income">+৳0.00</p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Expenses</p>
+        <p class="stat-value expense" id="total-expense">−৳0.00</p>
+      </div>
+      <div class="card">
+        <p class="stat-label">Net Cash Flow</p>
+        <p class="stat-value" id="net-cash-flow">৳0.00</p>
+      </div>
+      <div class="card">
+        <p class="stat-label">This Month</p>
+        <p class="stat-value" id="month-label">—</p>
+      </div>
+    </section>
+
+    <section aria-label="Recent transactions">
+      <h2 class="section-title">Recent Transactions</h2>
+      <div class="empty-state">
+        <p>No transactions yet.</p>
+        <div class="btn-stack">
+          <button type="button" class="btn btn-primary">+ Add Income</button>
+          <button type="button" class="btn btn-secondary">− Add Expense</button>
+        </div>
+        <p class="stat-note">Quick actions arrive in Phase 10.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Phase 7 skeleton &middot; data wired in Phase 9</p>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a class="nav-item" href="dashboard.html" aria-current="page">
+      <span class="nav-icon" aria-hidden="true">⌂</span>
+      Home
+    </a>
+    <a class="nav-item" href="transactions.html">
+      <span class="nav-icon" aria-hidden="true">≣</span>
+      Transactions
+    </a>
+    <span class="nav-add">
+      <button type="button" aria-label="Add transaction (opens modal in Phase 10)">＋</button>
+    </span>
+    <a class="nav-item" href="reports.html">
+      <span class="nav-icon" aria-hidden="true">▤</span>
+      Reports
+    </a>
+    <a class="nav-item" href="settings.html">
+      <span class="nav-icon" aria-hidden="true">⚙</span>
+      Settings
+    </a>
+  </nav>
+</body>
+</html>

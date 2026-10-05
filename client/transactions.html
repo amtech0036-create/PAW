@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Search, filter, and review all of your transactions." />
+  <title>Transactions · Personal Cash Flow Tracker</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-bar">
+      <h1>Transactions</h1>
+      <a class="bar-action" href="dashboard.html" aria-label="Back to dashboard">‹</a>
+    </header>
+
+    <!-- Search & filters wired in Phase 11 (PRD section 24). -->
+    <section class="card filter-bar" aria-label="Search and filters">
+      <div class="form-group" style="margin-bottom: 0">
+        <label for="tx-search">Search</label>
+        <input type="search" id="tx-search" name="search" placeholder="Search notes or categories" />
+      </div>
+
+      <div class="chip-row" role="group" aria-label="Filter by type">
+        <button type="button" class="chip" aria-pressed="true">All</button>
+        <button type="button" class="chip" aria-pressed="false">Income</button>
+        <button type="button" class="chip" aria-pressed="false">Expense</button>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 0">
+        <label for="tx-date-range">Date range</label>
+        <select id="tx-date-range" name="dateRange">
+          <option value="all" selected>All time</option>
+          <option value="today">Today</option>
+          <option value="this-week">This Week</option>
+          <option value="this-month">This Month</option>
+          <option value="last-month">Last Month</option>
+          <option value="custom">Custom Range…</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 0">
+        <label for="tx-category">Category</label>
+        <select id="tx-category" name="category">
+          <option value="all" selected>All categories</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Grouped-by-date list populated in Phase 11 (PRD section 22). -->
+    <section aria-label="Transaction list">
+      <h2 class="section-title">All Transactions</h2>
+      <div class="empty-state">
+        <p>No transactions match yet.</p>
+        <p class="stat-note">Transactions will be listed here, grouped by date, once wired in Phase 11.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Phase 7 skeleton &middot; list wired in Phase 11</p>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a class="nav-item" href="dashboard.html">
+      <span class="nav-icon" aria-hidden="true">⌂</span>
+      Home
+    </a>
+    <a class="nav-item" href="transactions.html" aria-current="page">
+      <span class="nav-icon" aria-hidden="true">≣</span>
+      Transactions
+    </a>
+    <span class="nav-add">
+      <button type="button" aria-label="Add transaction (opens modal in Phase 10)">＋</button>
+    </span>
+    <a class="nav-item" href="reports.html">
+      <span class="nav-icon" aria-hidden="true">▤</span>
+      Reports
+    </a>
+    <a class="nav-item" href="settings.html">
+      <span class="nav-icon" aria-hidden="true">⚙</span>
+      Settings
+    </a>
+  </nav>
+</body>
+</html>
