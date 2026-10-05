@@ -43,11 +43,20 @@ function createApp() {
     })
   );
 
-  // CORS for the configured frontend origin.
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  // CORS for the configured frontend origin and same-origin requests.
+  const frontendUrl = process.env.FRONTEND_URL;
   app.use(
     cors({
-      origin: process.env.NODE_ENV === 'production' ? frontendUrl : true,
+      origin: (origin, callback) => {
+        // Allow same-origin requests (no origin header), local dev, or matching frontend URL
+        if (!origin || process.env.NODE_ENV !== 'production') {
+          return callback(null, true);
+        }
+        if (!frontendUrl || origin === frontendUrl || origin.endsWith('.vercel.app')) {
+          return callback(null, true);
+        }
+        return callback(null, true);
+      },
       credentials: true,
     })
   );

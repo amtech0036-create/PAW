@@ -22,7 +22,7 @@
 
     const options = {
       method,
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: {},
     };
     if (body !== undefined) {

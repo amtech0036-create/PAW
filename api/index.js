@@ -7,6 +7,17 @@ const app = createApp();
  * Serverless function entrypoint for Vercel.
  */
 module.exports = async (req, res) => {
-  await connectDatabase();
+  try {
+    await connectDatabase();
+  } catch (err) {
+    console.error('[serverless] Database connection error:', err.message);
+  }
+
+  // Normalize req.url to ensure Express router matches correctly
+  if (req.url && !req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+  }
+
   return app(req, res);
 };
+
