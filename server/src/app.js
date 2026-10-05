@@ -9,6 +9,9 @@ const healthRoutes = require('./routes/healthRoutes');
 const authRoutes = require('./routes/authRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const reportRoutes = require('./routes/reportRoutes');
+const settingsRoutes = require('./routes/settingsRoutes');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 /**
@@ -39,6 +42,9 @@ function createApp() {
   app.use('/api/auth', authRoutes);
   app.use('/api/transactions', transactionRoutes);
   app.use('/api/dashboard', dashboardRoutes);
+  app.use('/api/categories', categoryRoutes);
+  app.use('/api/reports', reportRoutes);
+  app.use('/api/settings', settingsRoutes);
 
   // Serve the static PWA frontend from ../client.
   app.use(express.static(path.join(__dirname, '..', '..', 'client')));

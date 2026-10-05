@@ -830,3 +830,194 @@ a:hover {
     padding-bottom: 24px;
   }
 }
+
+/* ------------------------------------------------------------
+   Transaction modal (Phase 10, PRD sections 21/46)
+   ------------------------------------------------------------ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.modal-sheet {
+  position: relative;
+  width: 100%;
+  max-height: 92dvh;
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-radius: 20px 20px 0 0;
+  padding: 16px 20px calc(24px + env(safe-area-inset-bottom));
+  animation: sheet-up 0.25s ease;
+}
+
+.modal-grabber {
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--color-border);
+  margin: 0 auto 12px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  font-size: 24px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.segmented {
+  display: flex;
+  background: var(--color-bg);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.segment {
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.segment[aria-pressed='true'] {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-card);
+}
+
+.confirm-pane {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.confirm-pane h3 {
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+
+.confirm-pane p {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+/* ------------------------------------------------------------
+   Settings rows: actions, badges, inline rename (Phase 12)
+   ------------------------------------------------------------ */
+.form-success {
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  border-radius: var(--radius-input);
+  background: rgba(48, 209, 88, 0.12);
+  color: var(--color-success-ink);
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.row-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.row-action {
+  min-height: 44px;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--color-accent);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.row-action:hover {
+  text-decoration: underline;
+}
+
+.inline-form {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+}
+
+.inline-form input {
+  flex: 1;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  font: inherit;
+  font-size: 16px;
+}
+
+input[type='month'] {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  font-size: 16px;
+  font-family: inherit;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+@media (min-width: 768px) {
+  .modal-overlay {
+    align-items: center;
+  }
+
+  .modal-sheet {
+    max-width: 420px;
+    border-radius: 20px;
+    padding-bottom: 24px;
+  }
+
+  .modal-grabber {
+    display: none;
+  }
+}

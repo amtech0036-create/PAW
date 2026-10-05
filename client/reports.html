@@ -8,67 +8,78 @@
   <title>Reports · Personal Cash Flow Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body data-auth="required">
   <main class="app-shell">
     <header class="app-bar">
       <h1>Reports</h1>
       <a class="bar-action" href="dashboard.html" aria-label="Back to dashboard">‹</a>
     </header>
 
-    <!-- Populated in Phase 13 (Reports). -->
-    <section class="card" aria-label="Monthly overview">
-      <h2 class="section-title">October 2026</h2>
-      <p class="stat-label">Income</p>
-      <p class="stat-value income" id="report-income">৳0.00</p>
-      <p class="stat-label" style="margin-top: 12px">Expenses</p>
-      <p class="stat-value expense" id="report-expense">৳0.00</p>
-      <p class="stat-label" style="margin-top: 12px">Net</p>
-      <p class="stat-value" id="report-net">+৳0.00</p>
+    <section class="card filter-bar" aria-label="Report period">
+      <div class="form-group" style="margin-bottom: 0">
+        <label for="report-month">Month</label>
+        <input type="month" id="report-month" name="month" />
+      </div>
+      <div class="chip-row" role="group" aria-label="Period mode">
+        <button type="button" class="chip" id="mode-month" aria-pressed="true">Monthly</button>
+        <button type="button" class="chip" id="mode-custom" aria-pressed="false">Custom range</button>
+      </div>
+      <div id="report-custom-range" class="filter-bar" hidden>
+        <div class="form-group" style="margin-bottom: 0">
+          <label for="report-start-date">From</label>
+          <input type="date" id="report-start-date" name="startDate" />
+        </div>
+        <div class="form-group" style="margin-bottom: 0">
+          <label for="report-end-date">To</label>
+          <input type="date" id="report-end-date" name="endDate" />
+        </div>
+        <button type="button" class="btn btn-primary" id="report-apply-custom">Apply Range</button>
+      </div>
     </section>
 
-    <section class="card" aria-label="Income vs expense chart">
+    <section class="card" aria-label="Period summary">
+      <h2 class="section-title" id="report-period-title">—</h2>
+      <p class="stat-label">Income</p>
+      <p class="stat-value income" id="report-income">—</p>
+      <p class="stat-label" style="margin-top: 12px">Expenses</p>
+      <p class="stat-value expense" id="report-expense">—</p>
+      <p class="stat-label" style="margin-top: 12px">Net</p>
+      <p class="stat-value" id="report-net">—</p>
+      <p class="stat-note" id="report-count"></p>
+    </section>
+
+    <section class="card" aria-label="Income vs expense">
       <h2 class="section-title">Income vs Expense</h2>
       <div class="bar-row">
         <span class="bar-label">Income</span>
-        <div class="bar-track" role="img" aria-label="Income bar">
-          <div class="bar-fill income" style="width: 0%"></div>
+        <div class="bar-track">
+          <div class="bar-fill income" id="bar-income" style="width: 0%"></div>
         </div>
       </div>
       <div class="bar-row">
         <span class="bar-label">Expense</span>
-        <div class="bar-track" role="img" aria-label="Expense bar">
-          <div class="bar-fill expense" style="width: 0%"></div>
+        <div class="bar-track">
+          <div class="bar-fill expense" id="bar-expense" style="width: 0%"></div>
         </div>
       </div>
-      <p class="stat-note">Bars fill in once reports are wired in Phase 13. No chart library needed for the MVP.</p>
+      <p class="stat-note" id="report-bar-note"></p>
     </section>
 
     <section class="card" aria-label="Expense categories">
       <h2 class="section-title">Expense Categories</h2>
-      <div class="empty-state">
+      <div id="report-categories"></div>
+      <div id="report-categories-empty" class="empty-state" hidden>
         <p>No financial activity for this period.</p>
       </div>
-      <!-- Category rows render like: -->
-      <!-- <div class="cat-row"><span>Food</span><span><strong>৳5,000</strong> <span class="cat-pct">30%</span></span></div> -->
     </section>
 
     <section class="card" aria-label="Monthly history">
       <h2 class="section-title">Monthly History</h2>
-      <div class="empty-state">
-        <p>No history yet.</p>
-      </div>
-      <!-- Each month renders as:
-      <div class="month-block">
-        <h3>September 2026</h3>
-        <div class="month-row"><span>Income</span><span class="month-value">৳40,000</span></div>
-        <div class="month-row"><span>Expenses</span><span class="month-value">৳21,000</span></div>
-        <div class="month-row"><span>Net</span><span class="month-value">+৳19,000</span></div>
-      </div>
-      -->
+      <div id="report-history"></div>
     </section>
 
     <footer class="footer">
-      <p>Phase 7 skeleton &middot; reports wired in Phase 13</p>
+      <p>Numbers are calculated by the backend (PRD section 18)</p>
     </footer>
   </main>
 
@@ -82,7 +93,7 @@
       Transactions
     </a>
     <span class="nav-add">
-      <button type="button" aria-label="Add transaction (opens modal in Phase 10)">＋</button>
+      <button type="button" data-action="add" aria-label="Add transaction">＋</button>
     </span>
     <a class="nav-item" href="reports.html" aria-current="page">
       <span class="nav-icon" aria-hidden="true">▤</span>
@@ -93,5 +104,11 @@
       Settings
     </a>
   </nav>
+
+  <script src="js/api.js"></script>
+  <script src="js/format.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/transactionModal.js"></script>
+  <script src="js/reports.js"></script>
 </body>
 </html>

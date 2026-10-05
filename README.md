@@ -12,7 +12,7 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 
 **Stack:** HTML5 + CSS3 + Vanilla JS (frontend) · Node.js + Express (backend) · MongoDB + Mongoose (database) · JWT (auth, later phase)
 
-**Current status: PHASE 7 — Frontend Foundation.** The backend (auth, transactions, balance, dashboard) and all seven frontend pages with a shared mobile-first stylesheet are in place. Next: wiring the auth UI (Phase 8), then the dashboard/transaction UIs (Phases 9–11).
+**Current status: PHASE 13 — Reports.** The backend is complete (auth, transactions, balance, dashboard, categories, reports, settings) with 124 passing tests. The frontend is fully wired: auth UI with protected pages (8), dashboard (9), transaction modal (10), transaction list with search/filters/pagination (11), categories management (12), and reports with a custom range (13). Next: PWA (14), export/import (15).
 
 ## API so far
 
@@ -23,6 +23,14 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 | POST | `/api/auth/login` | — | Login; sets `token` cookie |
 | POST | `/api/auth/logout` | — | Clears the auth cookie |
 | GET | `/api/auth/me` | cookie or `Authorization: Bearer` | Current user |
+| GET/POST | `/api/transactions` | ✅ | List (search/filter/paginate) / create |
+| GET/PUT/DELETE | `/api/transactions/:id` | ✅ | Read / edit / delete a transaction |
+| GET | `/api/dashboard` | ✅ | Balance summary + recent transactions |
+| GET/POST | `/api/categories` | ✅ | List / create categories |
+| PUT/DELETE | `/api/categories/:id` | ✅ | Rename/disable / delete (409 if in use) |
+| GET | `/api/reports/monthly\|categories\|income-expense\|custom` | ✅ | Reports (timezone-aware, PRD §52) |
+| GET/PUT | `/api/settings` | ✅ | Display preferences |
+| PUT | `/api/settings/opening-balance` | ✅ | Set opening balance + date |
 
 ## Project structure
 
@@ -116,7 +124,11 @@ curl http://localhost:5000/api/health
 5. ✅ Balance service
 6. ✅ Dashboard API
 7. ✅ Frontend foundation (7 pages, mobile-first CSS)
-8–11. Auth UI, dashboard UI, add/edit transactions, transaction list
-12–13. Categories, Reports
+8. ✅ Authentication UI (login/register/logout/session guard)
+9. ✅ Dashboard UI (balance/income/expense/net/recent)
+10. ✅ Add income/expense modal (bottom sheet, edit + delete confirm)
+11. ✅ Transactions page (search, filters, pagination, edit, delete)
+12. ✅ Categories (API + settings UI, safe delete → disable)
+13. ✅ Reports (monthly, categories, income vs expense, custom range)
 14–15. PWA + export/import
 16–17. Security review, deployment

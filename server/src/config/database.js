@@ -2,6 +2,16 @@ require('./env');
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/personal_finance';
 
+const dns = require('dns');
+
+if (MONGODB_URI.startsWith('mongodb+srv://')) {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1']);
+  } catch (err) {
+    // Ignore if not supported in environment
+  }
+}
+
 /**
  * Connect to MongoDB.
  *
