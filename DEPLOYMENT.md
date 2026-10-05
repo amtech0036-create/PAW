@@ -125,6 +125,24 @@ pm2 startup
 
 ---
 
+### Option D: Vercel Deployment
+
+1. **Push your code to GitHub** (already configured with `vercel.json` and `api/index.js`).
+2. Go to [vercel.com](https://vercel.com) → **Add New Project** → Import your `PAW` repository.
+3. Configure **Project Settings**:
+   - **Framework Preset**: `Other`
+   - **Root Directory**: `./` (leave default)
+4. Add **Environment Variables** in the Vercel Dashboard:
+   - `NODE_ENV`: `production`
+   - `MONGODB_URI`: `mongodb+srv://<user>:<password>@cluster0.dozji1l.mongodb.net/?appName=Cluster0`
+   - `JWT_SECRET`: `<your_long_random_jwt_secret>`
+   - `FRONTEND_URL`: `https://<your-vercel-domain>.vercel.app`
+   - `COOKIE_SECURE`: `true`
+5. Click **Deploy**. Vercel will build and assign an HTTPS URL with auto SSL and global CDN.
+
+---
+
+
 ## 3. Post-Deployment Verification Checklist (PRD §59 Phase 17 & §62)
 
 Test each of the following flows on the live URL:

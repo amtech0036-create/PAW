@@ -23,6 +23,10 @@ if (MONGODB_URI.startsWith('mongodb+srv://')) {
 async function connectDatabase() {
   const mongoose = require('mongoose');
 
+  if (mongoose.connection.readyState === 1 || mongoose.connection.readyState === 2) {
+    return;
+  }
+
   mongoose.set('strictQuery', true);
 
   // Never log the connection string (may contain credentials).
