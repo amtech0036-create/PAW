@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<style>
+  html, body { margin: 0; padding: 0; }
+  /* Maskable icon: white background with the mark inside the 80% safe zone
+     (maskable icons require 20% padding on every side). */
+  .icon {
+    width: 100vw;
+    height: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-weight: 700;
+  }
+  .mark {
+    width: 80vw;
+    height: 80vw;
+    border-radius: 18vw;
+    background: linear-gradient(135deg, #0a84ff, #0055d4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+  .glyph { font-size: 44vw; line-height: 1; transform: translateY(-1.6vw); }
+</style>
+</head>
+<body>
+  <div class="icon"><span class="mark"><span class="glyph">&#2547;</span></span></div>
+</body>
+</html>

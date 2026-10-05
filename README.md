@@ -12,15 +12,15 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 
 **Stack:** HTML5 + CSS3 + Vanilla JS (frontend) · Node.js + Express (backend) · MongoDB + Mongoose (database) · JWT (auth, later phase)
 
-**Current status: PHASE 13 — Reports.** The backend is complete (auth, transactions, balance, dashboard, categories, reports, settings) with 124 passing tests. The frontend is fully wired: auth UI with protected pages (8), dashboard (9), transaction modal (10), transaction list with search/filters/pagination (11), categories management (12), and reports with a custom range (13). Next: PWA (14), export/import (15).
+**Current status: ALL PHASES COMPLETE (1–17).** The Personal Cash Flow Tracker MVP is production ready. All 17 phases from the PRD are fully implemented with 136 passing automated tests across 38 suites. Production Docker, Docker Compose, Nginx, and PM2 deployment configurations are available in [DEPLOYMENT.md](file:///d:/AMTechSolutions/PAW/PAW/DEPLOYMENT.md).
 
 ## API so far
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
 | GET | `/api/health` | — | Liveness + DB status |
-| POST | `/api/auth/register` | — | Create account (also seeds settings + default categories); sets `token` cookie |
-| POST | `/api/auth/login` | — | Login; sets `token` cookie |
+| POST | `/api/auth/register` | Rate limited | Create account (also seeds settings + default categories); sets `token` cookie |
+| POST | `/api/auth/login` | Rate limited | Login; sets `token` cookie |
 | POST | `/api/auth/logout` | — | Clears the auth cookie |
 | GET | `/api/auth/me` | cookie or `Authorization: Bearer` | Current user |
 | GET/POST | `/api/transactions` | ✅ | List (search/filter/paginate) / create |
@@ -31,6 +31,10 @@ Current Balance = Opening Balance + Total Income - Total Expenses
 | GET | `/api/reports/monthly\|categories\|income-expense\|custom` | ✅ | Reports (timezone-aware, PRD §52) |
 | GET/PUT | `/api/settings` | ✅ | Display preferences |
 | PUT | `/api/settings/opening-balance` | ✅ | Set opening balance + date |
+| GET | `/api/export/csv` | ✅ | Export all transactions in RFC 4180 CSV |
+| GET | `/api/export/json` | ✅ | Full JSON backup of settings, categories, transactions |
+| POST | `/api/import/json` | ✅ | Validated JSON backup or transactions import |
+
 
 ## Project structure
 
@@ -44,8 +48,22 @@ personal-finance-tracker/
 │   ├── transactions.html
 │   ├── reports.html
 │   ├── settings.html
+│   ├── manifest.json    # PWA manifest (PRD section 40)
+│   ├── sw.js            # Service worker: static-only offline cache
+│   ├── icons/           # 192/512, maskable, apple-touch, favicon
 │   ├── css/style.css    # Shared mobile-first styles
-│   └── js/app.js
+│   └── js/
+│       ├── api.js       # Fetch wrapper
+│       ├── auth.js      # Session guard + login/register/logout
+│       ├── format.js    # Money/date formatting (৳)
+│       ├── pwa.js       # SW registration + offline banner
+│       ├── transactionModal.js  # Add/edit/delete bottom sheet
+│       ├── dashboard.js # Phase 9
+│       ├── transactions.js      # Phase 11
+│       ├── categories.js        # Phase 12 (settings page)
+│       ├── settings.js  # Phase 12 (account/balance/prefs)
+│       ├── reports.js   # Phase 13
+│       └── app.js       # Landing status check
 ├── server/
 │   ├── src/
 │   │   ├── config/database.js
@@ -130,5 +148,9 @@ curl http://localhost:5000/api/health
 11. ✅ Transactions page (search, filters, pagination, edit, delete)
 12. ✅ Categories (API + settings UI, safe delete → disable)
 13. ✅ Reports (monthly, categories, income vs expense, custom range)
-14–15. PWA + export/import
-16–17. Security review, deployment
+14. ✅ PWA (manifest, service worker, icons, offline static cache)
+15. ✅ Export / import (CSV + JSON export, validated JSON import)
+16. ✅ Security review & hardening (rate limiting, NoSQL sanitization, CSP, cookies)
+17. ✅ Production deployment (Dockerfile, Compose, Nginx, PM2, and [DEPLOYMENT.md](file:///d:/AMTechSolutions/PAW/PAW/DEPLOYMENT.md))
+
+

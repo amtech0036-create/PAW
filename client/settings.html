@@ -7,6 +7,13 @@
   <meta name="description" content="Manage your account, financial settings, categories, and data." />
   <title>Settings · Personal Cash Flow Tracker</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="CashFlow" />
+  <script src="js/pwa.js" defer></script>
 </head>
 <body data-auth="required">
   <main class="app-shell">
@@ -121,15 +128,17 @@
       </form>
     </section>
 
-    <!-- Data (Phase 15 will wire these). -->
+    <!-- Data (Phase 15: CSV/JSON Export and JSON Import). -->
     <section class="card" aria-label="Data">
       <h2 class="section-title">Data</h2>
       <div class="btn-stack">
-        <button type="button" class="btn btn-secondary" disabled title="Arrives in Phase 15">Export CSV</button>
-        <button type="button" class="btn btn-secondary" disabled title="Arrives in Phase 15">Export JSON</button>
-        <button type="button" class="btn btn-secondary" disabled title="Arrives in Phase 15">Import JSON</button>
+        <button type="button" class="btn btn-secondary" id="btn-export-csv">Export CSV</button>
+        <button type="button" class="btn btn-secondary" id="btn-export-json">Export JSON</button>
+        <button type="button" class="btn btn-secondary" id="btn-import-json">Import JSON</button>
+        <input type="file" id="import-file-input" accept=".json,application/json" style="display: none" />
       </div>
-      <p class="stat-note">Export and import arrive in Phase 15.</p>
+      <div id="data-message" class="form-error" role="alert" style="margin-top: 10px"></div>
+      <p class="stat-note">Export all transactions to CSV/JSON or restore a JSON backup.</p>
     </section>
 
     <!-- Security (Phase 8). -->

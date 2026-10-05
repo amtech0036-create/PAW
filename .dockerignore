@@ -1,0 +1,12 @@
+node_modules
+server/node_modules
+.env
+.env.local
+.git
+.gitignore
+.freebuff
+.system_generated
+*.log
+npm-debug.log*
+tests/
+server/tests/

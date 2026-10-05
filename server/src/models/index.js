@@ -67,6 +67,10 @@ async function seedDefaultCategories(userId) {
 }
 
 module.exports = {
+  User,
+  Transaction,
+  Category,
+  Settings,
   ensureIndexes,
   seedDefaultCategories,
   DEFAULT_INCOME_CATEGORIES,

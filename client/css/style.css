@@ -771,6 +771,28 @@ a:hover {
 }
 
 /* ------------------------------------------------------------
+   PWA: offline banner (PRD section 41) and install behavior
+   ------------------------------------------------------------ */
+.offline-banner {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background: #b45309;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.offline-banner.visible {
+  display: block;
+}
+
+/* ------------------------------------------------------------
    Tablet and up (PRD section 54)
    ------------------------------------------------------------ */
 @media (min-width: 768px) {

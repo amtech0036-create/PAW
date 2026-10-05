@@ -107,4 +107,125 @@
         button.disabled = false;
       });
   });
+
+  // Data section (Phase 15: Export / Import).
+  var btnExportCsv = document.getElementById('btn-export-csv');
+  var btnExportJson = document.getElementById('btn-export-json');
+  var btnImportJson = document.getElementById('btn-import-json');
+  var importFileInput = document.getElementById('import-file-input');
+  var dataMessage = document.getElementById('data-message');
+
+  function showDataMessage(msg, isError) {
+    if (!dataMessage) return;
+    dataMessage.textContent = msg;
+    dataMessage.classList.toggle('visible', true);
+    dataMessage.classList.toggle('form-error', !!isError);
+    dataMessage.classList.toggle('form-success', !isError);
+  }
+
+  function hideDataMessage() {
+    if (!dataMessage) return;
+    dataMessage.textContent = '';
+    dataMessage.classList.remove('visible', 'form-error', 'form-success');
+  }
+
+  function downloadFromEndpoint(url, fallbackName) {
+    hideDataMessage();
+    fetch(url, { credentials: 'include' })
+      .then(function (res) {
+        if (!res.ok) {
+          return res.json().then(function (err) {
+            throw new Error(err.error || 'Export failed');
+          });
+        }
+        var disposition = res.headers.get('content-disposition') || '';
+        var match = disposition.match(/filename="?([^"]+)"?/);
+        var filename = match ? match[1] : fallbackName;
+        return res.blob().then(function (blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function () {
+            URL.revokeObjectURL(a.href);
+          }, 1000);
+          showDataMessage('Export downloaded successfully.');
+        });
+      })
+      .catch(function (err) {
+        showDataMessage(err.message || 'Export failed. Please try again.', true);
+      });
+  }
+
+  if (btnExportCsv) {
+    btnExportCsv.addEventListener('click', function () {
+      downloadFromEndpoint('/api/export/csv', 'cashflow-transactions.csv');
+    });
+  }
+
+  if (btnExportJson) {
+    btnExportJson.addEventListener('click', function () {
+      downloadFromEndpoint('/api/export/json', 'cashflow-backup.json');
+    });
+  }
+
+  if (btnImportJson && importFileInput) {
+    btnImportJson.addEventListener('click', function () {
+      hideDataMessage();
+      importFileInput.value = '';
+      importFileInput.click();
+    });
+
+    importFileInput.addEventListener('change', function () {
+      var file = importFileInput.files && importFileInput.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          var payload = JSON.parse(e.target.result);
+          var txns = Array.isArray(payload) ? payload : payload.transactions;
+          var count = Array.isArray(txns) ? txns.length : 0;
+
+          if (count === 0) {
+            showDataMessage('No transactions found in this JSON file.', true);
+            return;
+          }
+
+          var confirmed = window.confirm('Import ' + count + ' transactions into your account?');
+          if (!confirmed) return;
+
+          btnImportJson.disabled = true;
+          window.API.post('/api/import/json', payload)
+            .then(function (result) {
+              showDataMessage(
+                'Imported ' +
+                  result.imported.transactions +
+                  ' transactions (' +
+                  result.imported.categoriesCreated +
+                  ' new categories created).'
+              );
+              if (window.Categories) window.Categories.load();
+              window.API.get('/api/settings').then(renderSettings).catch(function () {});
+            })
+            .catch(function (err) {
+              var errMsg = err.message || 'Import failed.';
+              if (err.details && err.details.length) {
+                errMsg += ' ' + err.details.join('; ');
+              }
+              showDataMessage(errMsg, true);
+            })
+            .then(function () {
+              btnImportJson.disabled = false;
+            });
+        } catch (parseErr) {
+          showDataMessage('Invalid JSON file format: ' + parseErr.message, true);
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
 })();
+

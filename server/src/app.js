@@ -12,6 +12,9 @@ const dashboardRoutes = require('./routes/dashboardRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const reportRoutes = require('./routes/reportRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
+const exportRoutes = require('./routes/exportRoutes');
+const { mongoSanitize } = require('./middleware/sanitize');
+const { apiLimiter } = require('./middleware/rateLimiter');
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
 /**
@@ -22,7 +25,23 @@ function createApp() {
   const app = express();
 
   // Security headers (PRD section 44).
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          scriptSrc: ["'self'", "'unsafe-inline'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          imgSrc: ["'self'", 'data:', 'blob:'],
+          connectSrc: ["'self'"],
+          fontSrc: ["'self'"],
+          objectSrc: ["'none'"],
+          frameAncestors: ["'none'"],
+        },
+      },
+      crossOriginEmbedderPolicy: false,
+    })
+  );
 
   // CORS for the configured frontend origin.
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -37,7 +56,11 @@ function createApp() {
   app.use(express.urlencoded({ extended: true, limit: '1mb' }));
   app.use(require('cookie-parser')());
 
-  // API routes.
+  // Prevent NoSQL query injection attacks (PRD section 44).
+  app.use(mongoSanitize);
+
+  // API rate limiter (PRD section 44).
+  app.use('/api', apiLimiter);
   app.use('/api', healthRoutes);
   app.use('/api/auth', authRoutes);
   app.use('/api/transactions', transactionRoutes);
@@ -45,6 +68,7 @@ function createApp() {
   app.use('/api/categories', categoryRoutes);
   app.use('/api/reports', reportRoutes);
   app.use('/api/settings', settingsRoutes);
+  app.use('/api', exportRoutes);
 
   // Serve the static PWA frontend from ../client.
   app.use(express.static(path.join(__dirname, '..', '..', 'client')));
